@@ -1,5 +1,5 @@
 FROM nginx:1.21.1-alpine
-COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 
 RUN rm -rf /usr/share/nginx/html/*
 
