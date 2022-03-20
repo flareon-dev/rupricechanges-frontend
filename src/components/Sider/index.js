@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Table, Select, Typography, Button, Spin } from 'antd';
+import { Layout, Table, Select, Typography, Button, Spin, Space } from 'antd';
 import debounce from 'lodash/debounce';
 import Input from 'antd/lib/input/Input';
 import axios from 'axios';
@@ -72,12 +72,11 @@ function SiderPart({
   }
 
   return (
-    <Sider>
-      <Text>Выбор города</Text>
+    <>
       <Select
         mode="multiple"
         allowClear
-        style={{ width: '100%' }}
+        style={{ width: '40vw', marginRight: '10px' }}
         placeholder="Выбор города"
         onChange={handleChange}>
         {listOfTown.map((el) => (
@@ -86,11 +85,11 @@ function SiderPart({
           </Option>
         ))}
       </Select>
-      <Text>Выбор магазина</Text>
+
       <Select
         allowClear
-        style={{ width: '100%' }}
-        placeholder="Выбор города"
+        style={{ width: '20vw', marginRight: '10px' }}
+        placeholder="Выбор магазина"
         onChange={getCurrentShop}>
         {listOfShop.map((el) => (
           <Option key={el.id} title={el.title} slug={el.slug} id={el.id} cityid={el.cityId}>
@@ -101,8 +100,8 @@ function SiderPart({
 
       <DebounceSelect
         mode="multiple"
-        value={value}
-        placeholder="Выбор товара"
+        value={[]}
+        placeholder={value[0]?.label || 'Выбор товара'}
         fetchOptions={fetchUserList}
         onChange={(newValue, vb) => {
           setValue(newValue);
@@ -113,10 +112,7 @@ function SiderPart({
           width: '100%',
         }}
       />
-      <Button type="primary" style={{ width: '100%' }}>
-        Поиск
-      </Button>
-    </Sider>
+    </>
   );
 }
 export default SiderPart;
