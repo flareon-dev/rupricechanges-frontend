@@ -26,6 +26,7 @@ import shop5 from './shopsImage/5.jpg';
 import shop6 from './shopsImage/6.jpg';
 import shop7 from './shopsImage/9.jpg';
 import shop8 from './shopsImage/10.jpg';
+import GraphicXY from './components/Sider/Graphics/XY';
 
 const { Meta } = Card;
 
@@ -147,6 +148,13 @@ function App() {
       },
     ],
   };
+
+  let sourse = infoItem.map((el) => {
+    return {
+      date: moment(el.date).valueOf(),
+      value: el.price,
+    };
+  });
   console.log('data aboutItem', aboutItem);
   ////
   return (
@@ -180,6 +188,7 @@ function App() {
             />
           </div>
         </Card>
+
         {infoItem.length > 0 && (
           <Content>
             <Row justify="center" wrap={false}>
@@ -192,6 +201,7 @@ function App() {
               </Col>
               <Col span={16}>
                 <Card hoverable>
+                  <GraphicXY sourse={sourse} />
                   <Bar options={options} data={data} datasetIdKey="id" />
                 </Card>
               </Col>
