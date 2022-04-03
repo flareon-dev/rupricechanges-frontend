@@ -27,33 +27,34 @@
   min-height: 0;
   background: inherit !important;
 }
-.logo{
-  width: 10em;
-  height: 10em;
+.ant-layout-header {
+  
+  padding: 0 17%;
+ 
 }
-.flexLogo{
-  display: flex;
-  align-content: flex-end;
-    justify-content: flex-start;
-    align-items: center;
+.ruka{
+
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  background-position: 100% 50%!important;
+  padding: 0 17%;
+  padding-bottom: 60px;
+  background-size: 30% auto!important;
+  
 }
-.header{
-  background: #d0581fd4 !important;
-height: 10em;
-}
-.back{
-  background: rgb(255,255,255)!important;
-background: linear-gradient(66deg, rgba(255,255,255,1) 10%, rgba(255,229,217,1) 100%)!important;
 
 
-}
+
 .flexie{
-  display: flex;
-  align-items: flex-start;
+ max-width: 468px;
+ background: #F28D44;
+border-radius: 16px;
+border:none!important;
+
+height: 273px;
 }
 .flexText{
-  display: flex;
-  flex-direction:column;
+ float: left;
 }
 .titleHeader{
   margin-bottom: 0!important;
@@ -77,4 +78,103 @@ background: linear-gradient(66deg, rgba(255,255,255,1) 10%, rgba(255,229,217,1) 
     flex-direction: column;
     align-content: center;
     justify-content: center;
+}
+///Header
+.buttonHeader {
+  background: rgb(246, 246, 246);
+  border: 1px solid rgb(242, 141, 68);
+  box-sizing: border-box;
+  box-shadow: rgb(0 0 0 / 2%) 4px 4px 0px;
+  border-radius: 20px;
+  font-family: 'Century Gothic';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 22px;
+}
+.logoText{
+  font-family: 'Century Gothic';
+font-style: normal;
+font-weight: 400;
+font-size: 17.4102px;
+line-height: 21px;
+}
+.header{
+  background: inherit !important;
+height: 10em;
+
+
+
+}
+.flexLogo{
+  display: flex;
+  align-content: stretch;
+  justify-content: space-between;
+  align-items: center;
+}
+.textForm{
+  font-family: 'Century Gothic';
+font-style: normal;
+font-weight: 400;
+font-size: 26px;
+line-height: 32px;
+
+color: #F6F6F6;
+}
+.form{
+  display: flex;
+  align-items: center;
+    justify-content: center;
+    filter: drop-shadow(4px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.selectorForm{
+  background: #F6F6F6;
+box-shadow: 3.29091px 3.29091px 3.29091px rgba(191, 97, 29, 0.5);
+border-radius: 16.4545px!important;
+
+}
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+ 
+  
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  background: #F6F6F6;
+  box-shadow: 3.29091px 3.29091px 3.29091px rgba(191, 97, 29, 0.5);
+  border-radius: 16.4545px!important;
+}
+.titleMain{
+  font-family: 'Impact';
+font-style: normal;
+font-weight: 400;
+font-size: 48px;
+line-height: 59px;
+/* identical to box height */
+
+
+color: #F28D44;
+
+}
+.titleSecond{
+  font-family: 'Century Gothic';
+font-style: normal;
+font-weight: 400;
+font-size: 48px;
+line-height: 59px;
+
+color: #000000;
+
+}
+.wrapMainTitle{
+  margin-top: 40px;
+  margin-bottom: 29px;
+  }
+.wrapSecondTitle{
+max-width: 440px;
+margin-bottom: 29px;
+}
+.graph{
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 5000ms, transform 5000ms;
 }

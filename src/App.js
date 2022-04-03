@@ -5,7 +5,8 @@ import 'antd/dist/antd.less';
 import Input from 'antd/lib/input/Input';
 import './App.less';
 import SiderPart from './components/Sider';
-import logo from './logo.png';
+import { CSSTransition } from 'react-transition-group';
+
 import moment from 'moment';
 import {
   Chart as ChartJS,
@@ -18,7 +19,7 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { Card } from 'antd';
-import shop1 from './shopsImage/1.jpg';
+import bg from './bg.png';
 import shop2 from './shopsImage/2.jpg';
 import shop3 from './shopsImage/3.jpg';
 import shop4 from './shopsImage/4.jpg';
@@ -27,10 +28,11 @@ import shop6 from './shopsImage/6.jpg';
 import shop7 from './shopsImage/9.jpg';
 import shop8 from './shopsImage/10.jpg';
 import GraphicXY from './components/Sider/Graphics/XY';
+import Header from './components/Sider/Header';
 
 const { Meta } = Card;
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Footer, Sider, Content } = Layout;
 const { Option } = Select;
 const { Text, Link } = Typography;
 function App() {
@@ -52,6 +54,7 @@ function App() {
   const [currentShop, setCurrentShop] = React.useState([]);
   const [infoItem, setInfoItem] = React.useState([]);
   const [aboutItem, setAboutItem] = React.useState('');
+  const [inProp, setInProp] = React.useState(false);
   React.useEffect(() => {
     async function fetchData() {
       try {
@@ -84,6 +87,7 @@ function App() {
     }
   }
   function handleChange(value, rest) {
+    console.log(rest);
     getListOfShop(rest);
     setCurrentTown(rest);
   }
@@ -96,14 +100,17 @@ function App() {
   //   setInfoItem(res.data);
   // }
   async function getItemInfo(arr) {
+    console.log(`need`, arr);
     let test = arr[0].id;
     try {
-      const res = await axios.get(
-        `https://ruprice.flareon.ru/api/entities/price-by-offer?id=${test}`,
-      );
-      const res2 = await axios.get(`https://ruprice.flareon.ru/api/entities/offer?id=${test}`);
+      // const res = await axios.get(
+      //   `https://ruprice.flareon.ru/api/entities/price-by-offer?id=${test}`,
+      // );
+      const res2 = await axios.post(`https://ruprice.flareon.ru/api/entities/offer`, [
+        ...arr[0].id,
+      ]);
       setAboutItem(res2.data);
-      setInfoItem(res.data);
+      // setInfoItem(res.data);
     } catch (error) {
       alert(error);
     }
@@ -155,152 +162,85 @@ function App() {
       value: el.price,
     };
   });
-  console.log('data aboutItem', aboutItem);
+  console.log('data inProp', inProp);
   ////
   return (
     <Layout className="back">
-      <Header className="header">
-        <div className="flexLogo">
-          <img alt="example" src={logo} className="logo" />
-          <div className="flexText">
-            <Typography.Title level={1} className="titleHeader">
-              Flareon
-            </Typography.Title>
-            <Typography.Text className="titleDescr">
-              Система отслеживания изменения цен
-            </Typography.Text>
-            {/* хех */}
+      <Header setInProp={setInProp} />
+      {!aboutItem?.plotData?.length > 0 && (
+        <div style={{ background: `url(${bg})` }} className="ruka">
+          <div className="wrapMainTitle">
+            <Text className="titleMain">Не знаете как изменились цены?</Text>
           </div>
+          <div className="wrapSecondTitle">
+            <Text className="titleSecond">
+              Не проблема. <br></br>Мы все посчитали
+            </Text>
+          </div>
+          <Card className="flexie form">
+            <div>
+              <SiderPart
+                handleChange={handleChange}
+                getCurrentShop={getCurrentShop}
+                getItemInfo={getItemInfo}
+                listOfTown={listOfTown}
+                listOfShop={listOfShop}
+                currentTown={currentTown}
+                currentShop={currentShop}
+              />
+            </div>
+          </Card>
         </div>
-      </Header>
-      <Layout>
-        <Card bordered>
-          <div className="flexie">
-            <SiderPart
-              className="test"
-              handleChange={handleChange}
-              getCurrentShop={getCurrentShop}
-              getItemInfo={getItemInfo}
-              listOfTown={listOfTown}
-              listOfShop={listOfShop}
-              currentTown={currentTown}
-              currentShop={currentShop}
-            />
-          </div>
-        </Card>
+      )}
+      <CSSTransition
+        in={aboutItem?.plotData?.length > 0}
+        timeout={4000}
+        classNames="alert"
+        unmountOnExit
+        // onEnter={() => setShowButton(false)}
+        // onExited={() => setShowButton(true)}
+      >
+        <Content className="graph">
+          <Row justify="center" wrap={false}>
+            <Col span={8}>
+              <Card
+                style={{ height: '100%' }}
+                cover={<img alt="example" src={aboutItem.imageUrl} />}>
+                <Meta description={aboutItem.description} />
+              </Card>
+            </Col>
+            <Col span={16}>
+              <Card hoverable>
+                <GraphicXY sourse={sourse} />
+                <Bar options={options} data={data} datasetIdKey="id" />
+              </Card>
+            </Col>
+          </Row>
 
-        {infoItem.length > 0 && (
-          <Content>
-            <Row justify="center" wrap={false}>
-              <Col span={8}>
-                <Card
-                  style={{ height: '100%' }}
-                  cover={<img alt="example" src={aboutItem.imageUrl} />}>
-                  <Meta description={aboutItem.description} />
-                </Card>
-              </Col>
-              <Col span={16}>
-                <Card hoverable>
-                  <GraphicXY sourse={sourse} />
-                  <Bar options={options} data={data} datasetIdKey="id" />
-                </Card>
-              </Col>
-            </Row>
+          <Table dataSource={infoItem} columns={columns} />
+        </Content>
+      </CSSTransition>
+      {/* {aboutItem?.plotData?.length > 0 && (
+        <Content>
+          <Row justify="center" wrap={false}>
+            <Col span={8}>
+              <Card
+                style={{ height: '100%' }}
+                cover={<img alt="example" src={aboutItem.imageUrl} />}>
+                <Meta description={aboutItem.description} />
+              </Card>
+            </Col>
+            <Col span={16}>
+              <Card hoverable>
+                <GraphicXY sourse={sourse} />
+                <Bar options={options} data={data} datasetIdKey="id" />
+              </Card>
+            </Col>
+          </Row>
 
-            <Table dataSource={infoItem} columns={columns} />
-          </Content>
-        )}
-        <Typography.Title style={{ margin: '0 auto' }}>Магазины</Typography.Title>
-        <Carousel effect="scrollx" autoplay>
-          <div>
-            <h3 style={contentStyle}>
-              <Row gutter={16}>
-                <Col span={6}>
-                  <Card
-                    hoverable
-                    style={{ width: 240 }}
-                    className="cardShop"
-                    cover={<img alt="example" src={shop1} className="imgRule" />}>
-                    <Meta title="Пятерочка" />
-                  </Card>
-                </Col>
-                <Col span={6}>
-                  <Card
-                    hoverable
-                    style={{ width: 240 }}
-                    className="cardShop"
-                    cover={<img alt="example" src={shop2} className="imgRule" />}>
-                    <Meta title="Перекресток" />
-                  </Card>
-                </Col>
-                <Col span={6}>
-                  <Card
-                    hoverable
-                    style={{ width: 240 }}
-                    className="cardShop"
-                    cover={<img alt="example" src={shop3} className="imgRule" />}>
-                    <Meta title="Яндекс лавка" />
-                  </Card>
-                </Col>
-                <Col span={6}>
-                  <Card
-                    hoverable
-                    style={{ width: 240 }}
-                    className="cardShop"
-                    cover={<img alt="example" src={shop4} className="imgRule" />}>
-                    <Meta title="Глобус" />
-                  </Card>
-                </Col>
-              </Row>
-            </h3>
-          </div>
-          <div>
-            <h3 style={contentStyle}>
-              <Row gutter={16}>
-                <Col span={6}>
-                  <Card
-                    hoverable
-                    style={{ width: 240 }}
-                    className="cardShop"
-                    cover={<img alt="example" src={shop5} className="imgRule" />}>
-                    <Meta title="Магнит" />
-                  </Card>
-                </Col>
-                <Col span={6}>
-                  <Card
-                    hoverable
-                    style={{ width: 240 }}
-                    className="cardShop"
-                    cover={<img alt="example" src={shop6} className="imgRule" />}>
-                    <Meta title="Карусель" />
-                  </Card>
-                </Col>
-                <Col span={6}>
-                  <Card
-                    hoverable
-                    style={{ width: 240 }}
-                    className="cardShop"
-                    cover={<img alt="example" src={shop7} className="imgRule" />}>
-                    <Meta title="Виктория" />
-                  </Card>
-                </Col>
-                <Col span={6}>
-                  <Card
-                    hoverable
-                    style={{ width: 240 }}
-                    className="cardShop"
-                    cover={<img alt="example" src={shop8} className="imgRule" />}>
-                    <Meta title="Ашан" />
-                  </Card>
-                </Col>
-              </Row>
-            </h3>
-          </div>
-        </Carousel>
-        <Space size={[8, 16]} wrap>
-          {listOfTown.map((el) => el.name)}
-        </Space>
-      </Layout>
+          <Table dataSource={infoItem} columns={columns} />
+        </Content>
+      )} */}
     </Layout>
   );
 }

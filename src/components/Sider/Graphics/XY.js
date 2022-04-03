@@ -56,6 +56,7 @@ function GraphicXY({ sourse }) {
     // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
     let xAxis = chart.xAxes.push(
       am5xy.DateAxis.new(root, {
+        categoryField: 'category',
         maxDeviation: 0.2,
         baseInterval: {
           timeUnit: 'day',
@@ -65,7 +66,20 @@ function GraphicXY({ sourse }) {
         tooltip: am5.Tooltip.new(root, {}),
       }),
     );
+    // let xAxis = chart.xAxes.push(
+    //   am5xy.CategoryAxis.new(root, {
+    //     categoryField: "category",
+    //     renderer: am5xy.AxisRendererX.new(root, {})
+    //   })
+    // );
 
+    // xAxis.data.setAll([{
+    //   category: "Research"
+    // }, {
+    //   category: "Marketing"
+    // }, {
+    //   category: "Sales"
+    // }]);
     let yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
         renderer: am5xy.AxisRendererY.new(root, {}),
@@ -99,19 +113,19 @@ function GraphicXY({ sourse }) {
     // Set data
     let data = generateDatas(1200);
     console.log(`heeh`, data);
-    // sourse = [
-    //   {
-    //     date: moment('2022-03-26T21:00:00.000+00:00').valueOf(),
+    let call = [
+      {
+        date: moment('2022-03-26T21:00:00.000+00:00').valueOf(),
 
-    //     value: 79.99,
-    //   },
-    //   {
-    //     date: moment('2022-03-27T21:00:00.000+00:00').valueOf(),
-    //     value: 39.99,
-    //   },
-    // ];
+        value: 79.99,
+      },
+      {
+        date: moment('2022-03-27T21:00:00.000+00:00').valueOf(),
+        value: 39.99,
+      },
+    ];
     console.log();
-    series.data.setAll(sourse);
+    series.data.setAll(call);
 
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
