@@ -173,8 +173,20 @@ color: #000000;
 max-width: 440px;
 margin-bottom: 29px;
 }
-.graph{
+
+.graph-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.graph-enter-active {
   opacity: 1;
   transform: translateX(0);
-  transition: opacity 5000ms, transform 5000ms;
+  transition: opacity 3000ms, transform 3000ms;
+}
+.graph-exit {
+  opacity: 1;
+}
+.graph-exit-active {
+  opacity: 0;
+  transition: opacity 2000ms;
 }

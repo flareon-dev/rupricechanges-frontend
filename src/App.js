@@ -166,7 +166,7 @@ function App() {
   ////
   return (
     <Layout className="back">
-      <Header setInProp={setInProp} />
+      <Header setAboutItem={setAboutItem} />
       {!aboutItem?.plotData?.length > 0 && (
         <div style={{ background: `url(${bg})` }} className="ruka">
           <div className="wrapMainTitle">
@@ -195,7 +195,7 @@ function App() {
       <CSSTransition
         in={aboutItem?.plotData?.length > 0}
         timeout={4000}
-        classNames="alert"
+        classNames="graph"
         unmountOnExit
         // onEnter={() => setShowButton(false)}
         // onExited={() => setShowButton(true)}

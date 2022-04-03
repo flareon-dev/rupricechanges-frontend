@@ -1,6 +1,6 @@
 import { Layout, Table, Select, Typography, Button, Row, Col, Carousel, Space } from 'antd';
 import logo from '../../../logo.png';
-function Header() {
+function Header({ setAboutItem }) {
   const { Header, Footer, Sider, Content } = Layout;
   return (
     <Header className="header">
@@ -14,7 +14,14 @@ function Header() {
             {' '}
             О нас
           </Button>
-          <Button className="buttonHeader"> Контакты</Button>
+          <Button
+            className="buttonHeader"
+            onClick={() => {
+              setAboutItem('');
+            }}>
+            {' '}
+            Контакты
+          </Button>
         </div>
       </div>
     </Header>
