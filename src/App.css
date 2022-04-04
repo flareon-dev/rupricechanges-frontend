@@ -33,7 +33,7 @@
   background-position: 100% 50%!important;
   padding: 0 17%;
   padding-bottom: 60px;
-  background-size: 30% auto!important;
+  background-size: auto 60%!important;
 }
 .flexie {
   max-width: 468px;
@@ -128,7 +128,7 @@
   font-family: 'Impact';
   font-style: normal;
   font-weight: 400;
-  font-size: 48px;
+  font-size: calc((100vw - 10rem)/(80 - 30) * (1.5 - 1) + 2rem);
   line-height: 59px;
   /* identical to box height */
   color: #F28D44;
@@ -137,7 +137,7 @@
   font-family: 'Century Gothic';
   font-style: normal;
   font-weight: 400;
-  font-size: 48px;
+  font-size: calc((100vw - 10rem)/(80 - 30) * (1.5 - 1) + 2rem);
   line-height: 59px;
   color: #000000;
 }

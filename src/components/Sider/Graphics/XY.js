@@ -3,40 +3,33 @@ import * as am5 from '@amcharts/amcharts5';
 import * as am5xy from '@amcharts/amcharts5/xy';
 import am5themes_Animated from '@amcharts/amcharts5/themes/Animated';
 import moment from 'moment';
-function GraphicXY({ sourse }) {
+function GraphicXY({ aboutItem }) {
   useLayoutEffect(() => {
     let root = am5.Root.new('chartdiv');
 
     // Set themes
     // https://www.amcharts.com/docs/v5/concepts/themes/
     root.setThemes([am5themes_Animated.new(root)]);
+
+    // Create chart
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/
     let chart = root.container.children.push(
       am5xy.XYChart.new(root, {
         panX: true,
         panY: true,
         wheelX: 'panX',
         wheelY: 'zoomX',
+        maxTooltipDistance: 0,
         pinchZoomX: true,
       }),
     );
 
-    // Add cursor
-    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-    let cursor = chart.set(
-      'cursor',
-      am5xy.XYCursor.new(root, {
-        behavior: 'none',
-      }),
-    );
-    cursor.lineY.set('visible', false);
-
-    // Generate random data
     let date = new Date();
     date.setHours(0, 0, 0, 0);
     let value = 100;
 
     function generateData() {
-      value = Math.round(Math.random() * 10 - 5 + value);
+      value = Math.round(Math.random() * 10 - 4.2 + value);
       am5.time.add(date, 'day', 1);
       return {
         date: date.getTime(),
@@ -56,7 +49,6 @@ function GraphicXY({ sourse }) {
     // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
     let xAxis = chart.xAxes.push(
       am5xy.DateAxis.new(root, {
-        categoryField: 'category',
         maxDeviation: 0.2,
         baseInterval: {
           timeUnit: 'day',
@@ -66,20 +58,7 @@ function GraphicXY({ sourse }) {
         tooltip: am5.Tooltip.new(root, {}),
       }),
     );
-    // let xAxis = chart.xAxes.push(
-    //   am5xy.CategoryAxis.new(root, {
-    //     categoryField: "category",
-    //     renderer: am5xy.AxisRendererX.new(root, {})
-    //   })
-    // );
 
-    // xAxis.data.setAll([{
-    //   category: "Research"
-    // }, {
-    //   category: "Marketing"
-    // }, {
-    //   category: "Sales"
-    // }]);
     let yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
         renderer: am5xy.AxisRendererY.new(root, {}),
@@ -88,18 +67,54 @@ function GraphicXY({ sourse }) {
 
     // Add series
     // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-    let series = chart.series.push(
-      am5xy.LineSeries.new(root, {
-        name: 'Series',
-        xAxis: xAxis,
-        yAxis: yAxis,
-        valueYField: 'value',
-        valueXField: 'date',
-        tooltip: am5.Tooltip.new(root, {
-          labelText: '{valueY}',
+    console.log(aboutItem);
+    for (let i = 0; i < aboutItem.plotData.length; i++) {
+      let series = chart.series.push(
+        am5xy.LineSeries.new(root, {
+          name: aboutItem.plotData[i].category,
+          xAxis: xAxis,
+          yAxis: yAxis,
+          valueYField: 'value',
+          valueXField: 'date',
+          legendValueText: '{valueY}',
+          tooltip: am5.Tooltip.new(root, {
+            pointerOrientation: 'horizontal',
+            labelText: '{valueY}',
+          }),
         }),
+      );
+      console.log('data', series);
+
+      date = new Date();
+      date.setHours(0, 0, 0, 0);
+      value = 0;
+
+      let data = generateDatas(10);
+      console.log(data);
+      console.log(aboutItem.plotData[i].data);
+      series.data.setAll(
+        aboutItem.plotData[i].data.map((el) => {
+          return {
+            date: moment(el.date).valueOf(),
+            value: el.value,
+          };
+        }),
+      );
+
+      // Make stuff animate on load
+      // https://www.amcharts.com/docs/v5/concepts/animations/
+      series.appear();
+    }
+
+    // Add cursor
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+    let cursor = chart.set(
+      'cursor',
+      am5xy.XYCursor.new(root, {
+        behavior: 'none',
       }),
     );
+    cursor.lineY.set('visible', false);
 
     // Add scrollbar
     // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
@@ -110,26 +125,69 @@ function GraphicXY({ sourse }) {
       }),
     );
 
-    // Set data
-    let data = generateDatas(1200);
-    console.log(`heeh`, data);
-    let call = [
-      {
-        date: moment('2022-03-26T21:00:00.000+00:00').valueOf(),
+    chart.set(
+      'scrollbarY',
+      am5.Scrollbar.new(root, {
+        orientation: 'vertical',
+      }),
+    );
 
-        value: 79.99,
-      },
-      {
-        date: moment('2022-03-27T21:00:00.000+00:00').valueOf(),
-        value: 39.99,
-      },
-    ];
-    console.log();
-    series.data.setAll(call);
+    // Add legend
+    // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/
+    let legend = chart.rightAxesContainer.children.push(
+      am5.Legend.new(root, {
+        width: 200,
+        paddingLeft: 15,
+        height: am5.percent(100),
+      }),
+    );
+
+    // When legend item container is hovered, dim all the series except the hovered one
+    legend.itemContainers.template.events.on('pointerover', function (e) {
+      let itemContainer = e.target;
+
+      // As series list is data of a legend, dataContext is series
+      let series = itemContainer.dataItem.dataContext;
+
+      chart.series.each(function (chartSeries) {
+        if (chartSeries != series) {
+          chartSeries.strokes.template.setAll({
+            strokeOpacity: 0.15,
+            stroke: am5.color(0x000000),
+          });
+        } else {
+          chartSeries.strokes.template.setAll({
+            strokeWidth: 3,
+          });
+        }
+      });
+    });
+
+    // When legend item container is unhovered, make all series as they are
+    legend.itemContainers.template.events.on('pointerout', function (e) {
+      let itemContainer = e.target;
+      let series = itemContainer.dataItem.dataContext;
+
+      chart.series.each(function (chartSeries) {
+        chartSeries.strokes.template.setAll({
+          strokeOpacity: 1,
+          strokeWidth: 1,
+          stroke: chartSeries.get('fill'),
+        });
+      });
+    });
+
+    legend.itemContainers.template.set('width', am5.p100);
+    legend.valueLabels.template.setAll({
+      width: am5.p100,
+      textAlign: 'right',
+    });
+
+    // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
+    legend.data.setAll(chart.series.values);
 
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
-    series.appear(1000);
     chart.appear(1000, 100);
   }, []);
 
