@@ -73,11 +73,10 @@ function App() {
   }, []);
 
   async function getListOfShop(arr) {
-    console.log(arr);
     let test = await arr.map((el) => {
       return el.id;
     });
-    console.log(test);
+
     try {
       const shopResponse = await axios.post(
         `https://ruprice.flareon.ru/api/entities/retailer-by-city`,
@@ -91,7 +90,6 @@ function App() {
     }
   }
   function handleChange(value, rest) {
-    console.log(rest);
     getListOfShop(rest);
     setCurrentTown(rest);
   }
@@ -107,7 +105,6 @@ function App() {
   //   setInfoItem(res.data);
   // }
   async function getItemInfo(arr) {
-    console.log(`need`, arr);
     let test = arr[0].id;
     try {
       // const res = await axios.get(
@@ -122,7 +119,7 @@ function App() {
       alert(error);
     }
   }
-  console.log(currentShop);
+
   ////
   ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -247,7 +244,7 @@ function App() {
             </Col>
             <Col span={16}>
               <Card hoverable>
-                <GraphicXY sourse={sourse} />
+                <GraphicXY aboutItem={aboutItem} />
                 <Bar options={options} data={data} datasetIdKey="id" />
               </Card>
             </Col>
