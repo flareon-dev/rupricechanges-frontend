@@ -15,6 +15,10 @@ function SiderPart({
   currentTown,
   currentShop,
   getItemInfo,
+  addClass,
+  btnClass,
+  setclickTest,
+  textForm,
 }) {
   const [value, setValue] = React.useState([]);
   const [valueCur, setvalueCur] = React.useState([]);
@@ -74,13 +78,13 @@ function SiderPart({
 
   return (
     <>
-      <Row style={{ marginBottom: 25 }}>
-        <Col>
-          <Text className="textForm">Что хотели бы проверить ? </Text>
-        </Col>
-      </Row>
-      <Row style={{ marginBottom: 25 }}>
-        <Col span={24}>
+      <Row style={{ width: '100%' }} gutter={[16, 32]} wrap={true}>
+        <Col flex={5}>
+          <div className={textForm}>
+            {' '}
+            <Text className="textForm">Что хотели бы проверить ? </Text>
+          </div>
+
           <Select
             className="selectorForm"
             mode="multiple"
@@ -95,9 +99,7 @@ function SiderPart({
             ))}
           </Select>
         </Col>
-      </Row>
-      <Row gutter={18} style={{ marginBottom: 25 }}>
-        <Col span={12}>
+        <Col flex={4}>
           <Select
             className="selectorForm"
             allowClear
@@ -111,7 +113,7 @@ function SiderPart({
             ))}
           </Select>
         </Col>
-        <Col span={12}>
+        <Col flex={8}>
           <DebounceSelect
             className="selectorForm"
             mode="multiple"
@@ -127,6 +129,11 @@ function SiderPart({
               width: '100%',
             }}
           />
+        </Col>
+        <Col flex={1}>
+          <Button type="outline" className="btnForm" onClick={() => setclickTest(true)}>
+            Найти
+          </Button>
         </Col>
       </Row>
     </>

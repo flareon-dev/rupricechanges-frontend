@@ -29,6 +29,8 @@ import shop7 from './shopsImage/9.jpg';
 import shop8 from './shopsImage/10.jpg';
 import GraphicXY from './components/Sider/Graphics/XY';
 import Header from './components/Sider/Header';
+import classNames from 'classnames';
+import { ChordLinkDirected } from '@amcharts/amcharts5/.internal/charts/flow/ChordLinkDirected';
 
 const { Meta } = Card;
 
@@ -55,6 +57,8 @@ function App() {
   const [infoItem, setInfoItem] = React.useState([]);
   const [aboutItem, setAboutItem] = React.useState('');
   const [inProp, setInProp] = React.useState(false);
+  const [clas, setClass] = React.useState(['titleMain']);
+  const [clickTest, setclickTest] = React.useState(false);
   React.useEffect(() => {
     async function fetchData() {
       try {
@@ -93,6 +97,9 @@ function App() {
   }
   function getCurrentShop(value, rest) {
     setCurrentShop(rest);
+  }
+  function addClass(hide) {
+    setClass([...[clas], hide]);
   }
   // function getItemInfo(arr) {
   //   let res = axios.get(`https://ruprice.flareon.ru/api/entities/price-by-offer?id=${arr[0].id}`);
@@ -162,34 +169,63 @@ function App() {
       value: el.price,
     };
   });
+  let btnClass = classNames({
+    btn: true,
+    'btn-pressed': true,
+    'btn-over': 'e',
+  });
+  let TitleClass = classNames({
+    titleMain: true,
+    titleTest: clickTest,
+  });
+  let TitleSecond = classNames({
+    titleSecond: true,
+    titleTest: clickTest,
+  });
+  let formClass = classNames({
+    flexie: true,
+    form: true,
+    formTest: clickTest,
+  });
+  let MainBody = classNames({
+    ruka: true,
+    moveRuka: clickTest,
+  });
+
+  let textForm = classNames({
+    testLet: clickTest,
+  });
   console.log('data inProp', inProp);
   ////
   return (
     <Layout className="back">
       <Header setAboutItem={setAboutItem} />
       {!aboutItem?.plotData?.length > 0 && (
-        <div style={{ background: `url(${bg})` }} className="ruka">
+        <div style={{ background: `url(${bg})` }} className={MainBody}>
           <div className="wrapMainTitle">
-            <Text className="titleMain">Не знаете как изменились цены?</Text>
+            <Text className={TitleClass}>Не знаете как изменились цены?</Text>
           </div>
           <div className="wrapSecondTitle">
-            <Text className="titleSecond">
+            <Text className={TitleSecond}>
               Не проблема. <br></br>Мы все посчитали
             </Text>
           </div>
-          <Card className="flexie form">
-            <div>
-              <SiderPart
-                handleChange={handleChange}
-                getCurrentShop={getCurrentShop}
-                getItemInfo={getItemInfo}
-                listOfTown={listOfTown}
-                listOfShop={listOfShop}
-                currentTown={currentTown}
-                currentShop={currentShop}
-              />
-            </div>
-          </Card>
+          <div className={formClass}>
+            <SiderPart
+              className={formClass}
+              handleChange={handleChange}
+              getCurrentShop={getCurrentShop}
+              getItemInfo={getItemInfo}
+              listOfTown={listOfTown}
+              listOfShop={listOfShop}
+              currentTown={currentTown}
+              currentShop={currentShop}
+              addClass={addClass}
+              btnClass={btnClass}
+              setclickTest={setclickTest}
+              textForm={textForm}
+            />
+          </div>
         </div>
       )}
       <CSSTransition
