@@ -6,7 +6,10 @@ function Header({ setAboutItem }) {
     <Header className="header">
       <div style={{ marginTop: 41 }}>
         <div style={{ float: 'left', margin: 10 }}>
-          <img alt="example" src={logo} style={{ paddingRight: '58px' }} />
+          <a href="/" onclick="location.reload(); return false;">
+            <img alt="example" src={logo} style={{ paddingRight: '58px' }} />
+          </a>
+
           <span className="logoText">Девиз команды</span>
         </div>
         <div style={{ float: 'right' }}>

@@ -38,18 +38,6 @@ const { Footer, Sider, Content } = Layout;
 const { Option } = Select;
 const { Text, Link } = Typography;
 function App() {
-  const columns = [
-    {
-      title: 'Дата',
-      dataIndex: 'date',
-      render: (el) => moment(el).format('LL'),
-    },
-    {
-      title: 'Цена',
-      dataIndex: 'price',
-      render: (el) => <>{el} ₽</>,
-    },
-  ];
   const [listOfTown, setListOfTown] = React.useState([]);
   const [listOfShop, setListOfShop] = React.useState([]);
   const [currentTown, setCurrentTown] = React.useState([]);
@@ -105,7 +93,6 @@ function App() {
   //   setInfoItem(res.data);
   // }
   async function getItemInfo(arr) {
-    let test = arr[0].id;
     try {
       // const res = await axios.get(
       //   `https://ruprice.flareon.ru/api/entities/price-by-offer?id=${test}`,
@@ -114,6 +101,7 @@ function App() {
         ...arr[0].id,
       ]);
       setAboutItem(res2.data);
+      setclickTest(true);
       // setInfoItem(res.data);
     } catch (error) {
       alert(error);
@@ -121,51 +109,7 @@ function App() {
   }
 
   ////
-  ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-  const options = {
-    responsive: true,
-    type: 'line',
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'График изменения цены',
-      },
-    },
-  };
-  const contentStyle = {
-    display: 'flex',
-    height: '300px',
-    color: '#fff',
-    lineHeight: '160px',
-    textAlign: 'center',
-    alignContent: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-  };
-  // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-  const labels = infoItem.map((el) => moment(el.date).format('L'));
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        label: aboutItem.description,
-        data: infoItem.map((el) => el.price),
-        backgroundColor: '#f5bda3',
-      },
-    ],
-  };
-
-  let sourse = infoItem.map((el) => {
-    return {
-      date: moment(el.date).valueOf(),
-      value: el.price,
-    };
-  });
   let btnClass = classNames({
     btn: true,
     'btn-pressed': true,
@@ -192,67 +136,65 @@ function App() {
   let textForm = classNames({
     testLet: clickTest,
   });
-  console.log('data inProp', inProp);
+
   ////
   return (
     <Layout className="back">
       <Header setAboutItem={setAboutItem} />
-      {!aboutItem?.plotData?.length > 0 && (
-        <div style={{ background: `url(${bg})` }} className={MainBody}>
-          <div className="wrapMainTitle">
-            <Text className={TitleClass}>Не знаете как изменились цены?</Text>
-          </div>
-          <div className="wrapSecondTitle">
-            <Text className={TitleSecond}>
-              Не проблема. <br></br>Мы все посчитали
-            </Text>
-          </div>
-          <div className={formClass}>
-            <SiderPart
-              className={formClass}
-              handleChange={handleChange}
-              getCurrentShop={getCurrentShop}
-              getItemInfo={getItemInfo}
-              listOfTown={listOfTown}
-              listOfShop={listOfShop}
-              currentTown={currentTown}
-              currentShop={currentShop}
-              addClass={addClass}
-              btnClass={btnClass}
-              setclickTest={setclickTest}
-              textForm={textForm}
-            />
-          </div>
-        </div>
-      )}
-      <CSSTransition
-        in={aboutItem?.plotData?.length > 0}
-        timeout={4000}
-        classNames="graph"
-        unmountOnExit
-        // onEnter={() => setShowButton(false)}
-        // onExited={() => setShowButton(true)}
-      >
-        <Content className="graph">
-          <Row justify="center" wrap={false}>
-            <Col span={8}>
-              <Card
-                style={{ height: '100%' }}
-                cover={<img alt="example" src={aboutItem.imageUrl} />}>
-                <Meta description={aboutItem.description} />
-              </Card>
-            </Col>
-            <Col span={16}>
-              <Card hoverable>
-                <GraphicXY aboutItem={aboutItem} />
-                <Bar options={options} data={data} datasetIdKey="id" />
-              </Card>
-            </Col>
-          </Row>
 
-          <Table dataSource={infoItem} columns={columns} />
-        </Content>
-      </CSSTransition>
+      <div style={{ background: `url(${bg})` }} className={MainBody}>
+        <div className="wrapMainTitle">
+          <Text className={TitleClass}>Не знаете как изменились цены?</Text>
+        </div>
+        <div className="wrapSecondTitle">
+          <Text className={TitleSecond}>
+            Не проблема. <br></br>Мы все посчитали
+          </Text>
+        </div>
+        <div className={formClass}>
+          <SiderPart
+            className={formClass}
+            handleChange={handleChange}
+            getCurrentShop={getCurrentShop}
+            getItemInfo={getItemInfo}
+            listOfTown={listOfTown}
+            listOfShop={listOfShop}
+            currentTown={currentTown}
+            currentShop={currentShop}
+            addClass={addClass}
+            btnClass={btnClass}
+            setclickTest={setclickTest}
+            textForm={textForm}
+          />
+        </div>
+        <CSSTransition
+          in={aboutItem?.plotData?.length > 0}
+          timeout={4000}
+          classNames="graph"
+          unmountOnExit
+          // onEnter={() => setShowButton(false)}
+          // onExited={() => setShowButton(true)}
+        >
+          <Content className="graph">
+            <Row justify="center" wrap={true}>
+              <Col span={8}>
+                <Card
+                  style={{ height: '100%' }}
+                  cover={<img alt="example" src={aboutItem?.offer?.description} />}>
+                  <Meta description={aboutItem?.offer?.imageUrl} />
+                </Card>
+              </Col>
+              <Col span={16}>
+                <Card hoverable>
+                  <GraphicXY aboutItem={aboutItem} />
+                  {/* <Bar options={options} data={data} datasetIdKey="id" /> */}
+                </Card>
+              </Col>
+            </Row>
+          </Content>
+        </CSSTransition>
+      </div>
+
       {/* {aboutItem?.plotData?.length > 0 && (
         <Content>
           <Row justify="center" wrap={false}>

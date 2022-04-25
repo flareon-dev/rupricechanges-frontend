@@ -185,11 +185,14 @@ function GraphicXY({ aboutItem }) {
 
     // It's is important to set legend data after all the events are set on template, otherwise events won't be copied
     legend.data.setAll(chart.series.values);
-
+    console.log(`rerender`);
     // Make stuff animate on load
     // https://www.amcharts.com/docs/v5/concepts/animations/
     chart.appear(1000, 100);
-  }, []);
+    return () => {
+      root.dispose();
+    };
+  }, [aboutItem]);
 
   return <div id="chartdiv" style={{ width: '100%', height: '500px' }}></div>;
 }

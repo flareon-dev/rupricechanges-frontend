@@ -123,18 +123,18 @@ function SiderPart({
             onChange={(newValue, vb) => {
               setValue(newValue);
               getItemInfo(vb);
-              console.log('here', newValue, vb);
+              console.log('here', vb);
             }}
             style={{
               width: '100%',
             }}
           />
         </Col>
-        <Col flex={1}>
+        {/* <Col flex={1}>
           <Button type="outline" className="btnForm" onClick={() => setclickTest(true)}>
             Найти
           </Button>
-        </Col>
+        </Col> */}
       </Row>
     </>
   );

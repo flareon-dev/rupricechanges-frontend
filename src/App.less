@@ -29,15 +29,15 @@
 }
 .ant-layout-header {
   
-  padding: 0 17%;
+  padding: 0 10%;
  
 }
 .ruka{
-
+  height: 70vh;
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
   background-position: 100% 50%!important;
-  padding: 0 17%;
+  padding: 0 10%;
   padding-bottom: 60px;
   background-size: auto 60%!important;
   
@@ -126,6 +126,8 @@ line-height: 32px;
 color: #F6F6F6;
 }
 .form{
+  margin-top: 12em;
+
   display: flex;
   align-items: center;
     justify-content: center;
@@ -153,6 +155,8 @@ font-style: normal;
 font-weight: 400;
 font-size: calc((100vw - 10rem)/(80 - 30) * (1.5 - 1) + 2rem);
 line-height: 59px;
+position: absolute;
+// visibility:hidden;
 /* identical to box height */
 
 
@@ -165,17 +169,19 @@ font-style: normal;
 font-weight: 400;
 font-size: calc((100vw - 10rem)/(80 - 30) * (1.5 - 1) + 2rem);
 line-height: 59px;
-
+position: absolute;
 color: #000000;
 
 }
 .wrapMainTitle{
   margin-top: 40px;
-  margin-bottom: 29px;
+  margin-bottom: 100px;
   }
 .wrapSecondTitle{
 max-width: 440px;
 margin-bottom: 29px;
+margin-top: 40px;
+margin-bottom: 100px;
 }
 
 .graph-enter {
@@ -193,13 +199,14 @@ margin-bottom: 29px;
 }
 .graph-exit-active {
   opacity: 0;
-  transition: opacity 2000ms;
+  transition: opacity 2000ms; 
 }
 .formTest{
+  width: 80vw;
   max-width: 100%;
   max-height: 100px;
   opacity: 1;
-  transform: translateY(-250px);
+  transform: translateY(-10em);
   transition: opacity 3000ms, transform 3000ms;
   transition: 3s linear;
 
@@ -208,6 +215,7 @@ margin-bottom: 29px;
   opacity: 0;
   transform: translateX(-600px);
   transition: opacity 3000ms, transform 3000ms;
+  
  
 }
 .testLet{
