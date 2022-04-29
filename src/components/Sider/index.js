@@ -8,15 +8,14 @@ const { Header, Footer, Sider, Content } = Layout;
 const { Option } = Select;
 const { Text, Link } = Typography;
 function SiderPart({
-  handleChange,
+  getCurrentCities,
   getCurrentShop,
-  listOfTown,
+  listOfCities,
   listOfShop,
   currentTown,
   currentShop,
-  getItemInfo,
-  addClass,
-  btnClass,
+  getItemById,
+
   setclickTest,
   textForm,
 }) {
@@ -91,8 +90,8 @@ function SiderPart({
             allowClear
             style={{ width: '100%' }}
             placeholder="Выбор города"
-            onChange={handleChange}>
-            {listOfTown.map((el) => (
+            onChange={getCurrentCities}>
+            {listOfCities.map((el) => (
               <Option key={el.id} value={el.name} id={el.id}>
                 {el.name}
               </Option>
@@ -122,7 +121,7 @@ function SiderPart({
             fetchOptions={fetchUserList}
             onChange={(newValue, vb) => {
               setValue(newValue);
-              getItemInfo(vb);
+              getItemById(vb);
               console.log('here', vb);
             }}
             style={{

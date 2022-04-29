@@ -1,5 +1,5 @@
 import { Layout, Table, Select, Typography, Button, Row, Col, Carousel, Space } from 'antd';
-import logo from '../../../logo.png';
+import logo from '../../logo.png';
 function Header({ setAboutItem }) {
   const { Header, Footer, Sider, Content } = Layout;
   return (
