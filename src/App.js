@@ -6,7 +6,7 @@ import Input from 'antd/lib/input/Input';
 import './App.less';
 import SiderPart from './components/Sider';
 import { CSSTransition } from 'react-transition-group';
-
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import {
   Chart as ChartJS,
@@ -26,18 +26,23 @@ import classNames from 'classnames';
 import { ChordLinkDirected } from '@amcharts/amcharts5/.internal/charts/flow/ChordLinkDirected';
 import ApiAction from './ApiConnecntor';
 import { Route, Routes, Link } from 'react-router-dom';
+import Search from 'antd/lib/transfer/search';
+import SearchInput from './components/SearchInput';
+import Post from './components/Post';
 
 const { Meta } = Card;
 
 const { Footer, Sider, Content } = Layout;
 const { Option } = Select;
 const { Text } = Typography;
+
 function App() {
   const [listOfCities, setListOfCities] = React.useState([]);
   const [listOfRetailers, setListOfRetailers] = React.useState([]);
   const [currentCities, setCurrentCities] = React.useState([]);
   const [currentRetailer, setCurrentRetailer] = React.useState([]);
   const [search, setSearch] = React.useState('');
+  const navigate = useNavigate();
   //
 
   const [data, setData] = React.useState([]);
@@ -78,72 +83,55 @@ function App() {
 
   return (
     <Layout className="back">
-      <Select
-        mode="multiple"
-        value={currentCities}
-        onChange={(item, data) => {
-          getRetailerByCities(data);
-          setCurrentCities(data);
-        }}>
-        {listOfCities?.map((el) => (
-          <Option key={el.id} value={el.name} id={el.id} name={el.name}>
-            {el.name}
-          </Option>
-        ))}
-      </Select>
-      <Select
-        showSearch
-        value={currentRetailer}
-        placeholder="Search to Select"
-        onChange={(item, data) => {
-          setCurrentRetailer(data);
-        }}
-        optionFilterProp="children"
-        filterOption={(input, option) =>
-          option.children.toLowerCase().includes(input.toLowerCase())
-        }
-        filterSort={(optionA, optionB) => {
-          return optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase());
-        }}>
-        {listOfRetailers?.map((el) => (
-          <Option key={el} value={el} id={el} name={el}>
-            {el}
-          </Option>
-        ))}
-      </Select>
-      <Input
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-        }}
-      />
-      <Button
-        onClick={() => {
-          findByParams();
-        }}>
-        Найти
-      </Button>
-      <Table
-        onRow={(record) => {
-          return {
-            onClick: (event) => {
-              console.log(record);
-            }, // click row
-            onDoubleClick: (event) => {}, // double click row
-            onContextMenu: (event) => {}, // right button click row
-            onMouseEnter: (event) => {}, // mouse enter row
-            onMouseLeave: (event) => {}, // mouse leave row
-          };
-        }}
-        dataSource={data}
-        columns={columns}
-      />
       <Routes>
-        <Route path="/teams" element={<h1>hello</h1>}>
-          <Route index element={<h1>hello 2</h1>} />
-          <Route path=":teamId" element={<h1>hello3</h1>} />
+        <Route
+          path="/"
+          element={
+            <SearchInput
+              currentCities={currentCities}
+              getRetailerByCities={getRetailerByCities}
+              setCurrentCities={setCurrentCities}
+              currentRetailer={currentRetailer}
+              setCurrentRetailer={setCurrentRetailer}
+              listOfCities={listOfCities}
+              listOfRetailers={listOfRetailers}
+              search={search}
+              setSearch={setSearch}
+              findByParams={findByParams}
+            />
+          }>
+          <Route
+            index
+            element={
+              <Table
+                components={(e) => {
+                  console.log(e);
+                  return <h1>hee</h1>;
+                }}
+                onRow={(record) => {
+                  return {
+                    onClick: (event) => {
+                      console.log(record);
+                      navigate(`/${record.ids[0]}`, {
+                        state: {
+                          search: search,
+                          listOfIds: record.ids || [],
+                        },
+                      });
+                    }, // click row
+                    onDoubleClick: (event) => {}, // double click row
+                    onContextMenu: (event) => {}, // right button click row
+                    onMouseEnter: (event) => {}, // mouse enter row
+                    onMouseLeave: (event) => {}, // mouse leave row
+                  };
+                }}
+                dataSource={data}
+                columns={columns}
+              />
+            }
+          />
+          <Route path="/:id" element={<Post search={search} />} />
         </Route>
-        <Route />
       </Routes>
     </Layout>
   );

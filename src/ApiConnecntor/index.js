@@ -12,5 +12,8 @@ class ApiAction {
   static findByParams(data) {
     return ApiConnector.postAxios(`${ROOT}/find-by-params`, data);
   }
+  static getOffer(data) {
+    return ApiConnector.postAxios(`${ROOT}/offer`, data);
+  }
 }
 export default ApiAction;
