@@ -20,7 +20,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { Card } from 'antd';
 
-import GraphicXY from './components/Sider/Graphics/XY';
+import GraphicXY from './components/Graphics/XY';
 import Header from './components/Sider/Header';
 import classNames from 'classnames';
 import { ChordLinkDirected } from '@amcharts/amcharts5/.internal/charts/flow/ChordLinkDirected';

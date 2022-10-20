@@ -68,10 +68,10 @@ function GraphicXY({ aboutItem }) {
     // Add series
     // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
     console.log(aboutItem);
-    for (let i = 0; i < aboutItem.plotData.length; i++) {
+    for (let i = 0; i < aboutItem?.plotData.length; i++) {
       let series = chart.series.push(
         am5xy.LineSeries.new(root, {
-          name: aboutItem.plotData[i].category,
+          name: aboutItem?.plotData[i].category,
           xAxis: xAxis,
           yAxis: yAxis,
           valueYField: 'value',
@@ -91,9 +91,9 @@ function GraphicXY({ aboutItem }) {
 
       let data = generateDatas(10);
       console.log(data);
-      console.log(aboutItem.plotData[i].data);
+      console.log(aboutItem?.plotData[i].data);
       series.data.setAll(
-        aboutItem.plotData[i].data.map((el) => {
+        aboutItem?.plotData[i].data.map((el) => {
           return {
             date: moment(el.date).valueOf(),
             value: el.value,
@@ -118,19 +118,6 @@ function GraphicXY({ aboutItem }) {
 
     // Add scrollbar
     // https://www.amcharts.com/docs/v5/charts/xy-chart/scrollbars/
-    chart.set(
-      'scrollbarX',
-      am5.Scrollbar.new(root, {
-        orientation: 'horizontal',
-      }),
-    );
-
-    chart.set(
-      'scrollbarY',
-      am5.Scrollbar.new(root, {
-        orientation: 'vertical',
-      }),
-    );
 
     // Add legend
     // https://www.amcharts.com/docs/v5/charts/xy-chart/legend-xy-series/

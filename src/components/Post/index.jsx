@@ -3,9 +3,17 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import ApiAction from '../../ApiConnecntor';
-import { HomeOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  FallOutlined,
+  HomeOutlined,
+  RetweetOutlined,
+  RiseOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import Title from 'antd/lib/typography/Title';
 import Text from 'antd/lib/typography/Text';
+import GraphicXY from '../Graphics/XY';
+import LineGraph from '../Graphics/Line';
 
 const Post = ({ search }) => {
   const [itemInfo, setItemInfo] = React.useState({});
@@ -18,8 +26,21 @@ const Post = ({ search }) => {
       console.log(res);
       setItemInfo(res.data);
     });
-  }, [id]);
-  console.log(`use`, itemInfo);
+  }, [location?.state?.listOfIds]);
+
+  console.log(`DATA POST`, itemInfo);
+  let getCurrentIcon = (obj) => {
+    console.log('ya redner obj', obj);
+    let res = obj?.data[obj.data.length - 1].value - obj?.data[obj.data.length - 2].value;
+    console.log('this', res);
+    if (res < 0) {
+      return <FallOutlined style={{ color: '#ff4d4f' }} />;
+    } else if (res > 0) {
+      return <RiseOutlined style={{ color: '#52c41a' }} />;
+    } else {
+      return <RetweetOutlined style={{ color: '#fadb14' }} />;
+    }
+  };
   return (
     <Card>
       <Breadcrumb>
@@ -49,13 +70,16 @@ const Post = ({ search }) => {
                 return (
                   <Text>
                     цена в "{el?.category}" :{' '}
-                    <Text strong> {el?.data[el.data.length - 1].value} руб.</Text>
+                    <Text strong> {el?.data[el.data.length - 1].value} руб.</Text>{' '}
+                    {getCurrentIcon(el)}
                   </Text>
                 );
               })}
           </Space>
         </Col>
       </Row>
+
+      {itemInfo.plotData && <LineGraph dataOfCitites={itemInfo.plotData || []} />}
       {id}
     </Card>
   );
