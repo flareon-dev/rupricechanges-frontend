@@ -1,29 +1,27 @@
 import { Layout, Table, Select, Typography, Button, Row, Col, Carousel, Space } from 'antd';
 import logo from '../../../logo.png';
+import Logo from './logo';
 function Header({ setAboutItem }) {
   const { Header, Footer, Sider, Content } = Layout;
   return (
     <Header className="header">
-      <div style={{ marginTop: 41 }}>
-        <div style={{ float: 'left', margin: 10 }}>
-          <a href="/" onclick="location.reload(); return false;">
-            <img alt="example" src={logo} style={{ paddingRight: '58px' }} />
-          </a>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: 40,
+        }}>
+        <Logo />
 
-          <span className="logoText">Девиз команды</span>
-        </div>
-        <div style={{ float: 'right' }}>
-          <Button className="buttonHeader" style={{ marginRight: 30 }}>
+        <div>
+          {/* <Button className="buttonHeader" style={{ marginRight: 30 }}>
             {' '}
             О нас
-          </Button>
-          <Button
-            className="buttonHeader"
-            onClick={() => {
-              setAboutItem('');
-            }}>
+          </Button> */}
+          <Button className="ButtonFoxy" size="large">
             {' '}
-            Контакты
+            Войти
           </Button>
         </div>
       </div>

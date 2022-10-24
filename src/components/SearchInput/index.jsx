@@ -1,5 +1,7 @@
 import { Button, Col, Input, Row, Select } from 'antd';
+import Title from 'antd/lib/typography/Title';
 import { Outlet } from 'react-router';
+import Header from '../Sider/Header';
 const { Option } = Select;
 const SearchInput = ({
   currentCities,
@@ -15,7 +17,19 @@ const SearchInput = ({
 }) => {
   return (
     <>
-      <Row style={{ width: '100%' }} wrap align="middle" justify="center" gutter={[16, 32]}>
+      <Header />
+      <div className="WrapperMain">
+        <Title style={{ color: '#ffffff' }} className="fontFoxy">
+          Flareon - график изменения цен товара
+        </Title>
+      </div>
+      <Row
+        style={{ width: '100%' }}
+        wrap
+        align="middle"
+        justify="center"
+        gutter={[16, 32]}
+        className="WrapperSearch">
         <Col xs={24} sm={24} md={24} lg={16} xl={8} xxl={8}>
           {' '}
           <Select
@@ -23,6 +37,7 @@ const SearchInput = ({
             style={{
               width: '100%',
             }}
+            className="borderSelect"
             value={currentCities}
             onChange={(item, data) => {
               getRetailerByCities(data);
